@@ -18,10 +18,11 @@ char *_getline(void)
 {
 	size_t size = 126;
 	ssize_t charactersGet;
-	char buffer[126];
-	char *string = buffer;
+	char *buffer;
 
-	charactersGet = getline(&string, &size, stdin);
+	buffer = malloc(sizeof(char) * size);
+
+	charactersGet = getline(&buffer, &size, stdin);
 
 	if (charactersGet == EOF)
 	{
@@ -32,5 +33,5 @@ char *_getline(void)
 	buffer[charactersGet - 1] = '\0';
 	charactersGet -= 1;
 
-	return (string);
+	return (buffer);
 }
