@@ -26,6 +26,7 @@ char *_getline(void)
 
 	if (charactersGet == EOF)
 	{
+		free(buffer);
 		_putchar('\n');
 		exit (EXIT_SUCCESS);
 	}
