@@ -7,9 +7,10 @@
  *
  * @i: count
  */
-void error_file(char *chaine, int i)
+void error_file(char *chaine, int i, char *argv[])
 {
-	_puts("hsh: ");
+	_puts(argv[0]);
+	_puts(": ");
 	print_int(i);
 	_puts(": ");
 	_puts(chaine);
