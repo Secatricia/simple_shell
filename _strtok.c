@@ -29,3 +29,13 @@ char **separate_av(char *str)
 
     return (j);
 }
+
+/**
+ * free_separate_av - Free the memory alocated by separate_av
+ *
+ * @str: The array of string
+ */
+void free_separate_av(char **str)
+{
+	free(str);
+}

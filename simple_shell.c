@@ -42,6 +42,7 @@ void loop_asking(int i, char *argv[])
 			i++;
 			error_file(buffer, i, argv);
 		}
+		free_separate_av(sep);
 	} while (1);
 }
 

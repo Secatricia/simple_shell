@@ -14,6 +14,7 @@ char **strtow(char *str);
 int strwlen(char *s);
 void _puts(char *str);
 char **separate_av(char *str);
+void free_separate_av(char **str);
 int print_int(int n);
 int _putchar(char c);
 void *_realloc(void *ptr, unsigned int old_size, unsigned int new_size);
