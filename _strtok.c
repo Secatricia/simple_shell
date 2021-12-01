@@ -1,5 +1,12 @@
 #include "simple_shell.h"
 
+/**
+ * separate_av - separate the words
+ *
+ * @str: The String we want to know the words
+ *
+ * Return: The array of string
+ */
 char **separate_av(char *str)
 {
 	char *y, **j;

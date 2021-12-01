@@ -1,5 +1,12 @@
 #include "simple_shell.h"
 
+/**
+ * main - The main function for simple shell
+ *
+ * @argv: Arguments value with the name of the executable
+ *
+ * Return: 0 if is a success
+ */
 int main (__attribute__((unused)) int argc, char *argv[], __attribute__((unused)) char *env[])
 {
 	int i = 0;
@@ -9,6 +16,14 @@ int main (__attribute__((unused)) int argc, char *argv[], __attribute__((unused)
 	return (0);
 }
 
+/**
+ * loop_asking - Infinite loop with invoking some functions
+ * for asking to user a command, and execute the command if is
+ * possible
+ *
+ * @i: The count of error
+ * @argv: The arguments values with the name of executable
+ */
 void loop_asking(int i, char *argv[])
 {
 	char *buffer = "", **sep;
@@ -30,6 +45,13 @@ void loop_asking(int i, char *argv[])
 	} while (1);
 }
 
+/**
+ * _execute - Execute the command passes
+ *
+ * @sep: Array of string with all arguments for the command
+ *
+ * Return: 1 if an error is occurs, 0 if is a success
+ */
 int _execute(char **sep)
 {
 	pid_t child_pid;
