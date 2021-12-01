@@ -34,5 +34,11 @@ char *_getline(void)
 	buffer[charactersGet - 1] = '\0';
 	charactersGet -= 1;
 
+	if (_strcmp(buffer, "exit") == 0)
+	{
+		free(buffer);
+		exit (EXIT_SUCCESS);
+	}
+
 	return (buffer);
 }

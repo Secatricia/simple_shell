@@ -20,6 +20,7 @@ int _putchar(char c);
 void *_realloc(void *ptr, unsigned int old_size, unsigned int new_size);
 void *_calloc(unsigned int nmemb, unsigned int size);
 int count_word(char *s);
+int _strcmp(char *s1, char *s2);
 
 void _prompt(void);
 char *_getline(void);
