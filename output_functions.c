@@ -24,7 +24,10 @@ char *_getline(void)
 	charactersGet = getline(&string, &size, stdin);
 
 	if (charactersGet == EOF)
-		return (NULL);
+	{
+		_putchar('\n');
+		exit (EXIT_SUCCESS);
+	}
 
 	buffer[charactersGet - 1] = '\0';
 	charactersGet -= 1;
