@@ -28,7 +28,7 @@ char *_getline(void)
 	{
 		free(buffer);
 		_putchar('\n');
-		exit (EXIT_SUCCESS);
+		exit(EXIT_SUCCESS);
 	}
 
 	buffer[charactersGet - 1] = '\0';
@@ -37,7 +37,7 @@ char *_getline(void)
 	if (_strcmp(buffer, "exit") == 0)
 	{
 		free(buffer);
-		exit (EXIT_SUCCESS);
+		exit(EXIT_SUCCESS);
 	}
 
 	return (buffer);

@@ -4,8 +4,8 @@
  * error_file - handle error
  *
  * @chaine: user's chain
- *
  * @i: count
+ * @argv: Argument value passes at the beginning
  */
 void error_file(char *chaine, int i, char *argv[])
 {

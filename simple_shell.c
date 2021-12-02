@@ -3,11 +3,13 @@
 /**
  * main - The main function for simple shell
  *
+ * @argc: Count of the arguments passes
  * @argv: Arguments value with the name of the executable
+ * @env: List of environment variable
  *
  * Return: 0 if is a success
  */
-int main (__attribute__((unused)) int argc, char *argv[], __attribute__((unused)) char *env[])
+int main(__attribute__((unused)) int argc, char *argv[], __attribute__((unused)) char *env[])
 {
 	int i = 0;
 
@@ -29,8 +31,7 @@ void loop_asking(int i, char *argv[])
 	char *buffer = "", **sep;
 	struct stat st;
 
-	do
-	{
+	do {
 		_prompt();
 		buffer = _getline();
 		sep = separate_av(buffer);
@@ -57,7 +58,7 @@ void loop_asking(int i, char *argv[])
 int _execute(char **sep)
 {
 	pid_t child_pid;
-    int status;
+	int status;
 
 	child_pid = fork();
 	if (child_pid == -1)
