@@ -3,7 +3,7 @@
 /**
  * print_int - Print an int
  *
- * @arg: Int to print
+ * @n: Int to print
  *
  * Return: Lenght of int
  */
