@@ -42,3 +42,12 @@ char *_getline(void)
 
 	return (buffer);
 }
+
+/**
+ * sigint_handle - Handle the CTRL+D signal
+ * print a new line and a new prompt
+ */
+void sigint_handle(__attribute__((unused))int i)
+{
+	write(STDOUT_FILENO, "\n$ ", 3);
+}

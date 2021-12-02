@@ -33,6 +33,7 @@ void loop_asking(int i, char *argv[])
 
 	do {
 		_prompt();
+		signal(SIGINT, sigint_handle);
 		buffer = _getline();
 		sep = separate_av(buffer);
 
