@@ -9,7 +9,7 @@
  *
  * Return: 0 if is a success
  */
-int main(__attribute__((unused)) int argc, char *argv[], __attribute__((unused)) char *env[])
+int main(__attribute__((unused)) int argc, char *argv[], __attribute__((unused))char *env[])
 {
 	int i = 0;
 
@@ -30,22 +30,29 @@ void loop_asking(int i, char *argv[])
 {
 	char *buffer = "", **sep;
 	struct stat st;
+	path_t *path;
+
+	path = create_path_variable();
 
 	do {
+		i++;
 		_prompt();
-		buffer = _getline();
-		sep = separate_av(buffer);
-
-		if (stat(sep[0], &st) == 0)
-			_execute(sep);
-		else
+		buffer = _getline(path, i, argv);
+		if (buffer != NULL)
 		{
-			i++;
-			error_file(buffer, i, argv);
+			sep = separate_av(buffer);
+			sep[0] = test_with_path(path, sep[0]);
+
+			if (buffer != NULL && stat(sep[0], &st) == 0)
+				_execute(sep);
+			else if (buffer != NULL)
+				error_file(buffer, i, argv);
+
+			free_separate_av(sep);
+			free(buffer);
 		}
-		free_separate_av(sep);
-		free(buffer);
 	} while (1);
+
 }
 
 /**
