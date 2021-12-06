@@ -5,11 +5,10 @@
  *
  * @argc: Count of the arguments passes
  * @argv: Arguments value with the name of the executable
- * @env: List of environment variable
  *
  * Return: 0 if is a success
  */
-int main(__attribute__((unused)) int argc, char *argv[], __attribute__((unused))char *env[])
+int main(__attribute__((unused)) int argc, char *argv[])
 {
 	int i = 0;
 
@@ -29,23 +28,30 @@ int main(__attribute__((unused)) int argc, char *argv[], __attribute__((unused))
 void loop_asking(int i, char *argv[])
 {
 	char *buffer = "", **sep;
+	int path_exec;
 	struct stat st;
 	path_t *path;
+	env_t *env;
 
-	path = create_path_variable();
+	env = create_env_variable();
+	path = create_path_variable(env);
 
 	do {
 		i++;
 		_prompt();
-		buffer = _getline(path, i, argv);
+		buffer = _getline(path, i, argv, env);
 		if (buffer != NULL)
 		{
 			sep = separate_av(buffer);
-			sep[0] = test_with_path(path, sep[0]);
+			path_exec = test_with_path(path, sep);
 
-			if (buffer != NULL && stat(sep[0], &st) == 0)
-				_execute(sep);
-			else if (buffer != NULL)
+			if ((_strcmp(sep[0], "env") == 0 || _strcmp(sep[0], "printenv") == 0))
+				if (path_exec == 0)
+				_printenv(env, sep);
+
+			if (buffer != NULL && path_exec == 1 && stat(sep[0], &st) == 0)
+				_execute(sep[0], sep);
+			else if (buffer != NULL && path_exec == 1)
 				error_file(buffer, i, argv);
 
 			free_separate_av(sep);
@@ -58,11 +64,12 @@ void loop_asking(int i, char *argv[])
 /**
  * _execute - Execute the command passes
  *
+ * @command: The command passes by the user
  * @sep: Array of string with all arguments for the command
  *
  * Return: 1 if an error is occurs, 0 if is a success
  */
-int _execute(char **sep)
+int _execute(char *command, char **sep)
 {
 	pid_t child_pid;
 	int status;
@@ -75,7 +82,7 @@ int _execute(char **sep)
 	}
 	if (child_pid == 0)
 	{
-		if (execve(sep[0], sep, NULL) == -1)
+		if (execve(command, sep, NULL) == -1)
 		{
 			perror("Error:");
 		}

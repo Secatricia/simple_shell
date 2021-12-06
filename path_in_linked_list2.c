@@ -31,16 +31,18 @@ char **separate_path(char *str)
  * create_path_variable - Create the linked list variable
  * path using the environ
  *
+ * @env: Linked list of all environment variable
+ *
  * Return: path
  */
-path_t *create_path_variable(void)
+path_t *create_path_variable(env_t *env)
 {
 	char *str;
 	char **the_path;
 	path_t *path = NULL;
 	int j = 0;
 
-	str = _getenv("PATH");
+	str = _getenv("PATH", env);
 	the_path = separate_path(str);
 
 	while (the_path[j] != NULL)
@@ -60,11 +62,11 @@ path_t *create_path_variable(void)
  * test_with_path - Test if an command exist in one path of path
  *
  * @path: The linked list path
- * @buffer: The command give by the user
+ * @sep: The command give by the user with options
  *
  * Return: buffer if no command exist in path, otherwise path + command
  */
-char *test_with_path(path_t *path, char *buffer)
+int test_with_path(path_t *path, char **sep)
 {
 	int lenValue;
 	char *tmp_value, *tmp_buffer;
@@ -82,9 +84,9 @@ char *test_with_path(path_t *path, char *buffer)
 			tmp_value = strdup(path->value);
 			tmp_buffer = _strcat(tmp_buffer, tmp_value);
 			tmp_buffer[lenValue] = '/';
-			while (buffer[i] != '\0')
+			while (sep[0][i] != '\0')
 			{
-				tmp_buffer[lenValue + 1 + i] = buffer[i];
+				tmp_buffer[lenValue + 1 + i] = sep[0][i];
 				i++;
 			}
 			tmp_buffer[lenValue + 1 + i] = '\0';
@@ -93,8 +95,9 @@ char *test_with_path(path_t *path, char *buffer)
 		if (stat(tmp_buffer, &st) == 0)
 		{
 			free(tmp_value);
-			free(buffer);
-			return (tmp_buffer);
+			_execute(tmp_buffer, sep);
+			free(tmp_buffer);
+			return (0);
 		}
 
 		free(tmp_value);
@@ -102,5 +105,5 @@ char *test_with_path(path_t *path, char *buffer)
 		path = path->next;
 		i = 0;
 	}
-	return (buffer);
+	return (1);
 }

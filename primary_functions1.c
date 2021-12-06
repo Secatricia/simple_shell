@@ -128,7 +128,10 @@ void _puts(char *str)
 {
 	int length;
 
-	length = _strlen(str);
+	if (str != NULL)
+	{
+		length = _strlen(str);
 
-	write(STDOUT_FILENO, str, length);
+		write(STDOUT_FILENO, str, length);
+	}
 }
