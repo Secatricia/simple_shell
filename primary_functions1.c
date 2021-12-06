@@ -35,7 +35,7 @@ char **strtow(char *str)
 	if (str == NULL || *str == '\0')
 		return (NULL);
 
-	numberWords = count_word(str);
+	numberWords = count_word(str, ' ');
 
 	if (numberWords == 0)
 		return (NULL);
@@ -75,24 +75,25 @@ char **strtow(char *str)
  * count_word - Return the number of word in the strings
  *
  * @s: The String we want to know the words
+ * @sep: The separator for the count
  *
  * Return: length
  */
-int count_word(char *s)
+int count_word(char *s, char sep)
 {
 	int length, i = 0;
 
 	if (s == NULL)
 		return (0);
 
-	if (*s != ' ')
+	if (*s != sep)
 		length = 1;
 	else
 		length = 0;
 
 	while (s[i] != '\0')
 	{
-		if (s[i] != ' ' && i > 0 && s[i - 1] == ' ')
+		if (s[i] != sep && i > 0 && s[i - 1] == sep)
 			length++;
 
 		i++;

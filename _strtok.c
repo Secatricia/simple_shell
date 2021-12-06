@@ -15,7 +15,7 @@ char **separate_av(char *str)
 	if (str == NULL)
 		return (NULL);
 
-	length = count_word(str);
+	length = count_word(str, ' ');
 	y = strtok(str, " ");
 
 	j = malloc(sizeof(char *) * (length + 1));
@@ -23,7 +23,7 @@ char **separate_av(char *str)
 
 	while (y != NULL)
 	{
-		j[i++] = y;
+		j[i++] = _strdup(y);
 		y = strtok(NULL, " ");
 	}
 
@@ -37,5 +37,12 @@ char **separate_av(char *str)
  */
 void free_separate_av(char **str)
 {
+	int i = 0;
+
+	while (str[i] != NULL)
+	{
+		free(str[i]);
+		i++;
+	}
 	free(str);
 }
