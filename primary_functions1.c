@@ -24,10 +24,11 @@ int _strlen(char *s)
  * strtow - Splits a string into words
  *
  * @str: The string we split
+ * @sep: The separator needed for separate the string
  *
  * Return: str
  */
-char **strtow(char *str)
+char **strtow(char *str, char sep)
 {
 	char **aled;
 	int numberWords, i, iWord, iAled = 0;
@@ -35,34 +36,32 @@ char **strtow(char *str)
 	if (str == NULL || *str == '\0')
 		return (NULL);
 
-	numberWords = count_word(str, ' ');
-
+	numberWords = count_word(str, sep);
 	if (numberWords == 0)
 		return (NULL);
 
-	aled = (char **)malloc(sizeof(char *) * numberWords + 1);
-
+	aled = malloc(sizeof(char *) * numberWords + 8);
 	if (aled == NULL)
 		return (NULL);
+	aled[numberWords] = NULL;
 
-	for (i = 0; *(str + i) != '\0'; i++)
+	for (i = 0; str[i] != '\0'; i++)
 	{
-		if (*(str + i) != ' ')
+		if (str[i] != sep)
 		{
-			*(aled + iAled) = (char *)malloc(sizeof(char) * strwlen((str + i)) + 2);
-
-			if (*(aled + iAled) == NULL)
+			aled[iAled] = (char *)malloc(sizeof(char) * strwlen((str + i)) + 1);
+			if (aled[iAled] == NULL)
 			{
 				for (iAled = 0; iAled < numberWords; iAled++)
-					free(*(aled + iAled));
+					free(aled[iAled]);
 
 				free(aled);
 				return (NULL);
 			}
 
-			for (iWord = 0; *(str + i + iWord) != ' ' && *(str + i + iWord); iWord++)
-				*(*(aled + iAled) + iWord) = *(str + i + iWord);
-
+			for (iWord = 0; str[i + iWord] != sep && str[i + iWord]; iWord++)
+				aled[iAled][iWord] = str[i + iWord];
+			aled[iAled][iWord] = '\0';
 			if (iWord > 0)
 				iAled++;
 			i += strwlen((str + i)) - 1;

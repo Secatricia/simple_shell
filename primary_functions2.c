@@ -60,6 +60,7 @@ char *_strcat(char *dest, char *src)
 	for (loop = 0; loop < length_src; loop++)
 		*(dest + length_dest + loop) = *(src + loop);
 
+	dest[length_dest + loop] = '\0';
 	return (dest);
 }
 

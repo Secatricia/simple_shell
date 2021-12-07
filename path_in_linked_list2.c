@@ -63,14 +63,16 @@ path_t *create_path_variable(env_t *env)
  *
  * @path: The linked list path
  * @sep: The command give by the user with options
+ * @argv: The argument value passes when the programm is executed
+ * @i: The count of loop
  *
  * Return: buffer if no command exist in path, otherwise path + command
  */
-int test_with_path(path_t *path, char **sep)
+int test_with_path(path_t *path, char **sep, char **argv, int i)
 {
 	int lenValue;
 	char *tmp_value, *tmp_buffer;
-	int i = 0;
+	int loop = 0;
 	struct stat st;
 
 	while (path != NULL)
@@ -84,18 +86,18 @@ int test_with_path(path_t *path, char **sep)
 			tmp_value = strdup(path->value);
 			tmp_buffer = _strcat(tmp_buffer, tmp_value);
 			tmp_buffer[lenValue] = '/';
-			while (sep[0][i] != '\0')
+			while (sep[0][loop] != '\0')
 			{
-				tmp_buffer[lenValue + 1 + i] = sep[0][i];
-				i++;
+				tmp_buffer[lenValue + 1 + loop] = sep[0][loop];
+				loop++;
 			}
-			tmp_buffer[lenValue + 1 + i] = '\0';
+			tmp_buffer[lenValue + 1 + loop] = '\0';
 		}
 
-		if (stat(tmp_buffer, &st) == 0)
+		if (_strcmp(sep[0], "..") != 0 && stat(tmp_buffer, &st) == 0)
 		{
 			free(tmp_value);
-			_execute(tmp_buffer, sep);
+			_execute(tmp_buffer, sep, argv, i);
 			free(tmp_buffer);
 			return (0);
 		}
@@ -103,7 +105,7 @@ int test_with_path(path_t *path, char **sep)
 		free(tmp_value);
 		free(tmp_buffer);
 		path = path->next;
-		i = 0;
+		loop = 0;
 	}
 	return (1);
 }

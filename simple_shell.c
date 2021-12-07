@@ -40,25 +40,25 @@ void loop_asking(int i, char *argv[])
 		i++;
 		_prompt();
 		buffer = _getline(path, i, argv, env);
-		if (buffer != NULL)
-		{
-			sep = separate_av(buffer);
-			path_exec = test_with_path(path, sep);
+		sep = strtow(buffer, ' ');
+		if (buffer != NULL && sep != NULL)
+			if ((buffer[0] == '.' && buffer[1] != '\0') || buffer[0] != '.')
+			{
+				path_exec = test_with_path(path, sep, argv, i);
 
-			if ((_strcmp(sep[0], "env") == 0 || _strcmp(sep[0], "printenv") == 0))
-				if (path_exec == 0)
-				_printenv(env, sep);
+				if ((_strcmp(sep[0], "env") == 0 || _strcmp(sep[0], "printenv") == 0))
+					if (path_exec == 0)
+					_printenv(env, sep);
 
-			if (buffer != NULL && path_exec == 1 && stat(sep[0], &st) == 0)
-				_execute(sep[0], sep);
-			else if (buffer != NULL && path_exec == 1)
-				error_file(buffer, i, argv);
-
+				if (buffer != NULL && path_exec == 1 && stat(sep[0], &st) == 0)
+					_execute(sep[0], sep, argv, i);
+				else if (buffer != NULL && path_exec == 1)
+					error_file(sep[0], i, argv, 0);
+			}
+		if (sep != NULL)
 			free_separate_av(sep);
-			free(buffer);
-		}
+		free(buffer);
 	} while (1);
-
 }
 
 /**
@@ -66,13 +66,21 @@ void loop_asking(int i, char *argv[])
  *
  * @command: The command passes by the user
  * @sep: Array of string with all arguments for the command
+ * @argv: Argument value passes when the program is executed
+ * @i: The count of loop
  *
  * Return: 1 if an error is occurs, 0 if is a success
  */
-int _execute(char *command, char **sep)
+int _execute(char *command, char **sep, char **argv, int i)
 {
 	pid_t child_pid;
 	int status;
+
+	if (command[0] == '.' && command[1] == '.')
+	{
+		error_file(command, i, argv, 2);
+		return (1);
+	}
 
 	child_pid = fork();
 	if (child_pid == -1)
@@ -82,9 +90,9 @@ int _execute(char *command, char **sep)
 	}
 	if (child_pid == 0)
 	{
-		if (execve(command, sep, NULL) == -1)
+		if (execve(command, sep, environ) == -1)
 		{
-			perror("Error:");
+			error_file(command, i, argv, 2);
 		}
 	}
 	else
