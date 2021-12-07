@@ -69,27 +69,21 @@ void free_linked_path(path_t *head)
  * _getenv - Get an environment variable
  *
  * @name: Name of the variable we want
- *
+ * @env: The linked list of the environment variable
  * Return: The value of the variable find, or (null) if no variable
  */
-char *_getenv(const char *name)
+char *_getenv(const char *name, env_t *env)
 {
-	char *str;
 	int i = 0;
 
-	while (environ[i] != NULL)
+	while (env != NULL)
 	{
-		str = strtok(environ[i], "=");
+		if (strcmp(env->name, name) == 0)
+			return (env->value);
 
-		if (strcmp(str, name) == 0)
-		{
-			str = strtok(NULL, "=");
-			return (str);
-		}
+		env = env->next;
 		i++;
 	}
 
-	str = "(null)";
-
-	return (str);
+	return ("(null)");
 }
