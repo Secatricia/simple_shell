@@ -27,6 +27,12 @@ char **separate_av(char *str, char *sep)
 		y = strtok(NULL, sep);
 	}
 
+	if (j[0] == NULL)
+	{
+		free_separate_av(j);
+		return (NULL);
+	}
+
 	return (j);
 }
 
