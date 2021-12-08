@@ -6,7 +6,8 @@
  */
 void _prompt(void)
 {
-	_puts("$ ");
+	if (isatty(0) == 1)
+		_puts("$ ");
 }
 
 /**
@@ -31,14 +32,16 @@ char *_getline(path_t *path, int i, char *argv[], env_t *env)
 
 	if (charactersGet > 256)
 	{
-		error_file(buffer, i, argv);
+		buffer[charactersGet - 1] = '\0';
+		error_file(buffer, i, argv, 1);
 		free(buffer);
 		return (NULL);
 	}
 
 	if (charactersGet == EOF)
 	{
-		_putchar('\n');
+		if (isatty(0) == 1)
+			_putchar('\n');
 		exit_procedure(buffer, path, env);
 	}
 
