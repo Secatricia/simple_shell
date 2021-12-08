@@ -40,6 +40,7 @@ void loop_asking(int i, char *argv[], env_t *env, path_t *path)
 
 	do {
 		i++;
+		path_exec = 1;
 		_prompt();
 		buffer = _getline(path, env);
 		sep = separate_av(buffer, " \t\n\v\r\f");
@@ -50,13 +51,14 @@ void loop_asking(int i, char *argv[], env_t *env, path_t *path)
 			size_test = 1;
 		}
 		if (buffer != NULL && sep != NULL && size_test == 0)
-			if ((buffer[0] == '.' && buffer[1] != '\0') || buffer[0] != '.')
+			if ((sep[0][0] == '.' && sep[0][1] != '\0') || sep[0][0] != '.')
 			{
-				path_exec = test_with_path(path, sep, argv, i);
+				if (sep[0][0] != '.')
+					path_exec = test_with_path(path, sep, argv, i);
 
 				if ((_strcmp(sep[0], "env") == 0 || _strcmp(sep[0], "printenv") == 0))
 					if (path_exec == 0)
-					_printenv(env, sep);
+						_printenv(env, sep);
 
 				if (_strcmp(sep[0], "exit") == 0)
 				{
@@ -91,7 +93,7 @@ int _execute(char *command, char **sep, char **argv, int i)
 	pid_t child_pid;
 	int status;
 
-	if (command[0] == '.' && command[1] == '.')
+	if ((command[0] == '.' && command[1] == '.') || access(command, X_OK))
 	{
 		error_file(command, i, argv, 2);
 		return (1);
