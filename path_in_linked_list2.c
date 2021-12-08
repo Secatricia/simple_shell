@@ -78,12 +78,12 @@ int test_with_path(path_t *path, char **sep, char **argv, int i)
 	while (path != NULL)
 	{
 		lenValue = _strlen(path->value);
-		tmp_buffer = malloc(sizeof(char) * 256);
+		tmp_buffer = malloc(sizeof(char) * (256 + lenValue + 1));
 		*tmp_buffer = '\0';
 
 		if (path->value[lenValue - 1] != '/')
 		{
-			tmp_value = strdup(path->value);
+			tmp_value = _strdup(path->value);
 			tmp_buffer = _strcat(tmp_buffer, tmp_value);
 			tmp_buffer[lenValue] = '/';
 			while (sep[0][loop] != '\0')
