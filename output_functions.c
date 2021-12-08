@@ -14,29 +14,19 @@ void _prompt(void)
  * _getline - Ask to the user what command he want
  *
  * @path: The linked list path, if EOF or exit, it's free
- * @i: The number of increment of loop
- * @argv: All arguments passes when the program is executed
  * @env: The linked list of all environment variable
  *
  * Return: Buffer, or NULL if EOF or exit
  */
-char *_getline(path_t *path, int i, char *argv[], env_t *env)
+char *_getline(path_t *path, env_t *env)
 {
 	size_t size = 256;
 	ssize_t charactersGet;
 	char *buffer;
 
-	buffer = malloc(sizeof(char) * size);
+	buffer = _calloc(sizeof(char), size);
 
 	charactersGet = getline(&buffer, &size, stdin);
-
-	if (charactersGet > 256)
-	{
-		buffer[charactersGet - 1] = '\0';
-		error_file(buffer, i, argv, 1);
-		free(buffer);
-		return (NULL);
-	}
 
 	if (charactersGet == EOF)
 	{

@@ -28,7 +28,7 @@ int main(__attribute__((unused)) int argc, char *argv[])
 void loop_asking(int i, char *argv[])
 {
 	char *buffer = "", **sep;
-	int path_exec;
+	int path_exec, size_test = 0;
 	struct stat st;
 	path_t *path;
 	env_t *env;
@@ -39,9 +39,14 @@ void loop_asking(int i, char *argv[])
 	do {
 		i++;
 		_prompt();
-		buffer = _getline(path, i, argv, env);
+		buffer = _getline(path, env);
 		sep = strtow(buffer, ' ');
-		if (buffer != NULL && sep != NULL)
+		if (sep != NULL && _strlen(sep[0]) > 255)
+		{
+			error_file(sep[0], i, argv, 1);
+			size_test = 1;
+		}
+		if (buffer != NULL && sep != NULL && size_test == 0)
 			if ((buffer[0] == '.' && buffer[1] != '\0') || buffer[0] != '.')
 			{
 				path_exec = test_with_path(path, sep, argv, i);
@@ -58,6 +63,7 @@ void loop_asking(int i, char *argv[])
 		if (sep != NULL)
 			free_separate_av(sep);
 		free(buffer);
+		size_test = 0;
 	} while (1);
 }
 
