@@ -44,9 +44,6 @@ char *_getline(path_t *path, env_t *env)
 		return (NULL);
 	}
 
-	if (_strcmp(buffer, "exit") == 0)
-		exit_procedure(buffer, path, env);
-
 	return (buffer);
 }
 

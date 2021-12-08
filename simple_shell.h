@@ -58,7 +58,7 @@ void free_node(path_t *head);
 
 void _prompt(void);
 char *_getline(path_t *path, env_t *env);
-void loop_asking(int i, char *argv[]);
+void loop_asking(int i, char *argv[], env_t *env, path_t *path);
 int _execute(char *command, char **sep, char **argv, int i);
 void error_file(char *chaine, int i, char *argv[], int nerr);
 

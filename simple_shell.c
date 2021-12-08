@@ -11,8 +11,13 @@
 int main(__attribute__((unused)) int argc, char *argv[])
 {
 	int i = 0;
+	path_t *path;
+	env_t *env;
 
-	loop_asking(i, argv);
+	env = create_env_variable();
+	path = create_path_variable(env);
+
+	loop_asking(i, argv, env, path);
 
 	return (0);
 }
@@ -25,22 +30,22 @@ int main(__attribute__((unused)) int argc, char *argv[])
  * @i: The count of error
  * @argv: The arguments values with the name of executable
  */
-void loop_asking(int i, char *argv[])
+void loop_asking(int i, char *argv[], env_t *env, path_t *path)
 {
 	char *buffer = "", **sep;
 	int path_exec, size_test = 0;
 	struct stat st;
-	path_t *path;
-	env_t *env;
-
-	env = create_env_variable();
-	path = create_path_variable(env);
 
 	do {
 		i++;
 		_prompt();
 		buffer = _getline(path, env);
 		sep = strtow(buffer, ' ');
+		if (_strcmp(sep[0], "exit") == 0)
+		{
+			free_separate_av(sep);
+			exit_procedure(buffer, path, env);
+		}
 		if (sep != NULL && _strlen(sep[0]) > 255)
 		{
 			error_file(sep[0], i, argv, 1);
