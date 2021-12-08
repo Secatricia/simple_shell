@@ -68,7 +68,7 @@ void exit_procedure(char *buffer, path_t *path, env_t *env)
  * @env: Linked list of all environment variables
  * @sep: All options for printenv
  */
-void _printenv(env_t *env, char **sep)
+int _printenv(env_t *env, char **sep)
 {
 
 	while (env != NULL)
@@ -84,4 +84,6 @@ void _printenv(env_t *env, char **sep)
 
 		env = env->next;
 	}
+
+	return (0);
 }

@@ -35,12 +35,13 @@ int main(__attribute__((unused)) int argc, char *argv[])
 void loop_asking(int i, char *argv[], env_t *env, path_t *path)
 {
 	char *buffer = "", **sep;
-	int path_exec, size_test = 0;
+	int path_exec, env_exec, size_test = 0;
 	struct stat st;
 
 	do {
 		i++;
 		path_exec = 1;
+		env_exec = 1;
 		_prompt();
 		buffer = _getline(path, env);
 		sep = separate_av(buffer, " \t\n\v\r\f");
@@ -53,12 +54,11 @@ void loop_asking(int i, char *argv[], env_t *env, path_t *path)
 		if (buffer != NULL && sep != NULL && size_test == 0)
 			if ((sep[0][0] == '.' && sep[0][1] != '\0') || sep[0][0] != '.')
 			{
-				if (sep[0][0] != '.')
-					path_exec = test_with_path(path, sep, argv, i);
-
 				if ((_strcmp(sep[0], "env") == 0 || _strcmp(sep[0], "printenv") == 0))
-					if (path_exec == 0)
-						_printenv(env, sep);
+					env_exec = _printenv(env, sep);
+
+				if (sep[0][0] != '.' && env_exec != 0)
+					path_exec = test_with_path(path, sep, argv, i);
 
 				if (_strcmp(sep[0], "exit") == 0)
 				{
@@ -68,7 +68,7 @@ void loop_asking(int i, char *argv[], env_t *env, path_t *path)
 
 				if (buffer != NULL && path_exec == 1 && stat(sep[0], &st) == 0)
 					_execute(sep[0], sep, argv, i);
-				else if (buffer != NULL && path_exec == 1)
+				else if (buffer != NULL && path_exec == 1 && env_exec == 1)
 					error_file(sep[0], i, argv, 0);
 			}
 		if (sep != NULL)

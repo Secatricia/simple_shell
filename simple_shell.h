@@ -73,7 +73,7 @@ char *_strcat(char *dest, char *src);
 int test_with_path(path_t *path, char **sep, char **argv, int i);
 char *_strdup(char *str);
 
-void _printenv(env_t *env, char **sep);
+int _printenv(env_t *env, char **sep);
 env_t *create_env_variable(void);
 void free_linked_env(env_t *head);
 env_t *allocate_node_env(char *name, char *value, env_t *next);
