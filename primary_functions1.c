@@ -28,7 +28,7 @@ int _strlen(char *s)
  *
  * Return: str
  */
-char **strtow(char *str, char sep)
+char **strtow(char *str, char __attribute__((unused))sep)
 {
 	char **aled;
 	int numberWords, i, iWord, iAled = 0;
@@ -36,7 +36,7 @@ char **strtow(char *str, char sep)
 	if (str == NULL || *str == '\0')
 		return (NULL);
 
-	numberWords = count_word(str, sep);
+	numberWords = count_word(str, " ");
 	if (numberWords == 0)
 		return (NULL);
 
@@ -78,26 +78,33 @@ char **strtow(char *str, char sep)
  *
  * Return: length
  */
-int count_word(char *s, char sep)
+int count_word(char *s, char *sep)
 {
-	int length, i = 0;
+	int length, i = 0, isep = 0;
 
 	if (s == NULL)
 		return (0);
 
-	if (*s != sep)
+	while (*s != sep[isep] && sep[isep] != '\0')
+		isep++;
+
+	if (sep[isep] == '\0')
 		length = 1;
 	else
 		length = 0;
 
+	isep = 0;
 	while (s[i] != '\0')
 	{
-		if (s[i] != sep && i > 0 && s[i - 1] == sep)
+		while (s[i] != sep[isep] && sep[isep] != '\0')
+			isep++;
+
+		if (sep[isep] != '\0' && sep[isep] >= 21)
 			length++;
 
 		i++;
+		isep = 0;
 	}
-
 	return (length);
 }
 

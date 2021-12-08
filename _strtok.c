@@ -4,10 +4,11 @@
  * separate_av - separate the words
  *
  * @str: The String we want to know the words
+ * @sep: The separator we destroy
  *
  * Return: The array of string
  */
-char **separate_av(char *str)
+char **separate_av(char *str, char *sep)
 {
 	char *y, **j;
 	int i = 0, length;
@@ -15,16 +16,15 @@ char **separate_av(char *str)
 	if (str == NULL)
 		return (NULL);
 
-	length = count_word(str, ' ');
-	y = strtok(str, " ");
+	length = count_word(str, sep);
+	y = strtok(str, sep);
 
-	j = malloc(sizeof(char *) * (length + 1));
-	j[length] = NULL;
+	j = _calloc(sizeof(char *), (length) + 1);
 
 	while (y != NULL)
 	{
 		j[i++] = _strdup(y);
-		y = strtok(NULL, " ");
+		y = strtok(NULL, sep);
 	}
 
 	return (j);

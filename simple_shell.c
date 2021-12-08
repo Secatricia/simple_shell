@@ -29,6 +29,8 @@ int main(__attribute__((unused)) int argc, char *argv[])
  *
  * @i: The count of error
  * @argv: The arguments values with the name of executable
+ * @env: The linked list of env variable
+ * @path: The linked list of path variable
  */
 void loop_asking(int i, char *argv[], env_t *env, path_t *path)
 {
@@ -40,12 +42,8 @@ void loop_asking(int i, char *argv[], env_t *env, path_t *path)
 		i++;
 		_prompt();
 		buffer = _getline(path, env);
-		sep = strtow(buffer, ' ');
-		if (_strcmp(sep[0], "exit") == 0)
-		{
-			free_separate_av(sep);
-			exit_procedure(buffer, path, env);
-		}
+		sep = separate_av(buffer, " \t\n\v\r\f");
+
 		if (sep != NULL && _strlen(sep[0]) > 255)
 		{
 			error_file(sep[0], i, argv, 1);
@@ -59,6 +57,12 @@ void loop_asking(int i, char *argv[], env_t *env, path_t *path)
 				if ((_strcmp(sep[0], "env") == 0 || _strcmp(sep[0], "printenv") == 0))
 					if (path_exec == 0)
 					_printenv(env, sep);
+
+				if (_strcmp(sep[0], "exit") == 0)
+				{
+					free_separate_av(sep);
+					exit_procedure(buffer, path, env);
+				}
 
 				if (buffer != NULL && path_exec == 1 && stat(sep[0], &st) == 0)
 					_execute(sep[0], sep, argv, i);

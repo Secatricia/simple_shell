@@ -12,7 +12,7 @@ char **separate_path(char *str)
 	char *y, **j;
 	int i = 0, length;
 
-	length = count_word(str, ':');
+	length = count_word(str, ":");
 	y = strtok(str, ":");
 
 	j = malloc(sizeof(char *) * (length + 1));
