@@ -68,7 +68,7 @@ void exit_procedure(char *buffer, path_t *path, env_t *env)
  * @env: Linked list of all environment variables
  * @sep: All options for printenv
  */
-int _printenv(env_t *env, char **sep)
+int _printenv(env_t *env, __attribute__((unused))char **sep)
 {
 
 	while (env != NULL)
@@ -79,8 +79,7 @@ int _printenv(env_t *env, char **sep)
 		if (env->value != NULL)
 			_puts(env->value);
 
-		if (sep[1] == NULL || (sep[1] != NULL && _strcmp(sep[1], "-0") != 0))
-			putchar('\n');
+		putchar('\n');
 
 		env = env->next;
 	}
