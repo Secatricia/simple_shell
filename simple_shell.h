@@ -10,6 +10,7 @@
 #include <sys/stat.h>
 
 extern char **environ;
+int status;
 
 /**
  * struct linked_path - Do a linked list for environment variable PATH

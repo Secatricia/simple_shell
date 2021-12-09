@@ -16,6 +16,7 @@ int main(__attribute__((unused)) int argc, char *argv[])
 
 	env = create_env_variable();
 	path = create_path_variable(env);
+	status = EXIT_SUCCESS;
 
 	loop_asking(i, argv, env, path);
 
@@ -87,7 +88,6 @@ void loop_asking(int i, char *argv[], env_t *env, path_t *path)
 int _execute(char *command, char **sep, char **argv, int i)
 {
 	pid_t child_pid;
-	int status;
 
 	if ((command[0] == '.' && command[1] == '.') || access(command, X_OK))
 	{
