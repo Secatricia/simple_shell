@@ -57,10 +57,10 @@ path_t *create_linked_lp(char *the_path);
 void free_node(path_t *head);
 
 void _prompt(void);
-char *_getline(path_t *path, env_t *env);
+char *_getline(path_t *path, env_t *env, int status);
 void loop_asking(int i, char *argv[], env_t *env, path_t *path);
 int _execute(char *cmd, char **sep, char **argv, int i);
-void error_file(char *chaine, int i, char *argv[], int nerr);
+int error_file(char *chaine, int i, char *argv[], int nerr);
 
 path_t *add_path_node(path_t *head, char *value);
 path_t *allocate_node(char *value, path_t *next);
@@ -79,7 +79,7 @@ void free_linked_env(env_t *head);
 env_t *allocate_node_env(char *name, char *value, env_t *next);
 env_t *add_env_node(env_t *head, char *name, char *value);
 
-void exit_procedure(char *buffer, path_t *path, env_t *env);
+void exit_procedure(char *buffer, path_t *path, env_t *env, int status);
 char *int_to_string(int i);
 
 #endif

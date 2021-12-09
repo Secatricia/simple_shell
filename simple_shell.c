@@ -35,7 +35,7 @@ int main(__attribute__((unused)) int argc, char *argv[])
 void loop_asking(int i, char *argv[], env_t *env, path_t *path)
 {
 	char *buffer = "", **sep;
-	int path_exec, env_exec, size_test = 0;
+	int path_exec, env_exec, size_test = 0, status = 0;
 	struct stat st;
 
 	do {
@@ -43,11 +43,11 @@ void loop_asking(int i, char *argv[], env_t *env, path_t *path)
 		path_exec = 1;
 		env_exec = 1;
 		_prompt();
-		buffer = _getline(path, env);
+		buffer = _getline(path, env, status);
 		sep = separate_av(buffer, " \t\n\v\r\f");
 		if (sep != NULL && _strlen(sep[0]) > 255)
 		{
-			error_file(sep[0], i, argv, 1);
+			status = error_file(sep[0], i, argv, 1);
 			size_test = 1;
 		}
 		if (buffer != NULL && sep != NULL && size_test == 0)
@@ -60,12 +60,12 @@ void loop_asking(int i, char *argv[], env_t *env, path_t *path)
 				if (_strcmp(sep[0], "exit") == 0)
 				{
 					free_separate_av(sep);
-					exit_procedure(buffer, path, env);
+					exit_procedure(buffer, path, env, status);
 				}
 				if (buffer != NULL && path_exec == 1 && stat(sep[0], &st) == 0)
-					_execute(sep[0], sep, argv, i);
+					status = _execute(sep[0], sep, argv, i);
 				else if (buffer != NULL && path_exec == 1 && env_exec == 1)
-					error_file(sep[0], i, argv, 0);
+					status = error_file(sep[0], i, argv, 0);
 			}
 		if (sep != NULL)
 			free_separate_av(sep);
@@ -90,22 +90,19 @@ int _execute(char *cmd, char **sep, char **argv, int i)
 	int status;
 
 	if ((cmd[0] == '.' && cmd[1] == '.' && cmd[3] == '\0') || access(cmd, X_OK))
-	{
-		error_file(cmd, i, argv, 2);
-		return (1);
-	}
+		return (error_file(cmd, i, argv, 2));
 
 	child_pid = fork();
 	if (child_pid == -1)
 	{
 		perror("Error:");
-		return (1);
+		return (2);
 	}
 	if (child_pid == 0)
 	{
 		if (execve(cmd, sep, environ) == -1)
 		{
-			error_file(cmd, i, argv, 2);
+			return (2);
 		}
 	}
 	else

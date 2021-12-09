@@ -18,7 +18,7 @@ void _prompt(void)
  *
  * Return: Buffer, or NULL if EOF or exit
  */
-char *_getline(path_t *path, env_t *env)
+char *_getline(path_t *path, env_t *env, int status)
 {
 	size_t size = 256;
 	ssize_t charactersGet;
@@ -32,7 +32,7 @@ char *_getline(path_t *path, env_t *env)
 	{
 		if (isatty(0) == 1)
 			_putchar('\n');
-		exit_procedure(buffer, path, env);
+		exit_procedure(buffer, path, env, status);
 	}
 
 	buffer[charactersGet - 1] = '\0';
@@ -53,13 +53,14 @@ char *_getline(path_t *path, env_t *env)
  * @buffer: The buffer of getline
  * @path: The linked list path
  * @env: The linked list of all environment variable
+ * @status: The status for exit
  */
-void exit_procedure(char *buffer, path_t *path, env_t *env)
+void exit_procedure(char *buffer, path_t *path, env_t *env, int status)
 {
 		free_linked_env(env);
 		free_linked_path(path);
 		free(buffer);
-		exit(0);
+		exit(status);
 }
 
 /**

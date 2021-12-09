@@ -8,7 +8,7 @@
  * @argv: Argument value passes at the beginning
  * @nerr: The number of the error that occurs
  */
-void error_file(char *chaine, int i, char *argv[], int nerr)
+int error_file(char *chaine, int i, char *argv[], int nerr)
 {
 	int length;
 	char *number, *str;
@@ -33,6 +33,7 @@ void error_file(char *chaine, int i, char *argv[], int nerr)
 
 	free(number);
 	free(str);
+	return (127);
 }
 
 /**
