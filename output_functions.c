@@ -83,7 +83,7 @@ int _printenv(env_t *env, __attribute__((unused))char **sep)
 		if (env->value != NULL)
 			_puts(env->value);
 
-		putchar('\n');
+		_putchar('\n');
 
 		env = env->next;
 	}
