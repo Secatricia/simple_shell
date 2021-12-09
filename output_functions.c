@@ -15,6 +15,7 @@ void _prompt(void)
  *
  * @path: The linked list path, if EOF or exit, it's free
  * @env: The linked list of all environment variable
+ * @status: The status of the execute
  *
  * Return: Buffer, or NULL if EOF or exit
  */

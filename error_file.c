@@ -7,6 +7,8 @@
  * @i: count
  * @argv: Argument value passes at the beginning
  * @nerr: The number of the error that occurs
+ *
+ * Return: 127
  */
 int error_file(char *chaine, int i, char *argv[], int nerr)
 {
