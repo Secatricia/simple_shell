@@ -67,6 +67,8 @@ void exit_procedure(char *buffer, path_t *path, env_t *env)
  *
  * @env: Linked list of all environment variables
  * @sep: All options for printenv
+ *
+ * Return: 0
  */
 int _printenv(env_t *env, __attribute__((unused))char **sep)
 {

@@ -45,7 +45,6 @@ void loop_asking(int i, char *argv[], env_t *env, path_t *path)
 		_prompt();
 		buffer = _getline(path, env);
 		sep = separate_av(buffer, " \t\n\v\r\f");
-
 		if (sep != NULL && _strlen(sep[0]) > 255)
 		{
 			error_file(sep[0], i, argv, 1);
@@ -56,16 +55,13 @@ void loop_asking(int i, char *argv[], env_t *env, path_t *path)
 			{
 				if ((_strcmp(sep[0], "env") == 0 || _strcmp(sep[0], "printenv") == 0))
 					env_exec = _printenv(env, sep);
-
 				if (sep[0][0] != '.' && env_exec != 0)
 					path_exec = test_with_path(path, sep, argv, i);
-
 				if (_strcmp(sep[0], "exit") == 0)
 				{
 					free_separate_av(sep);
 					exit_procedure(buffer, path, env);
 				}
-
 				if (buffer != NULL && path_exec == 1 && stat(sep[0], &st) == 0)
 					_execute(sep[0], sep, argv, i);
 				else if (buffer != NULL && path_exec == 1 && env_exec == 1)
