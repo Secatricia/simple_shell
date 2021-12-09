@@ -16,7 +16,6 @@ int main(__attribute__((unused)) int argc, char *argv[])
 
 	env = create_env_variable();
 	path = create_path_variable(env);
-	status = EXIT_SUCCESS;
 
 	loop_asking(i, argv, env, path);
 
@@ -78,20 +77,21 @@ void loop_asking(int i, char *argv[], env_t *env, path_t *path)
 /**
  * _execute - Execute the command passes
  *
- * @command: The command passes by the user
+ * @cmd: The command passes by the user
  * @sep: Array of string with all arguments for the command
  * @argv: Argument value passes when the program is executed
  * @i: The count of loop
  *
  * Return: 1 if an error is occurs, 0 if is a success
  */
-int _execute(char *command, char **sep, char **argv, int i)
+int _execute(char *cmd, char **sep, char **argv, int i)
 {
 	pid_t child_pid;
+	int status;
 
-	if ((command[0] == '.' && command[1] == '.') || access(command, X_OK))
+	if ((cmd[0] == '.' && cmd[1] == '.' && cmd[3] == '\0') || access(cmd, X_OK))
 	{
-		error_file(command, i, argv, 2);
+		error_file(cmd, i, argv, 2);
 		return (1);
 	}
 
@@ -103,9 +103,9 @@ int _execute(char *command, char **sep, char **argv, int i)
 	}
 	if (child_pid == 0)
 	{
-		if (execve(command, sep, environ) == -1)
+		if (execve(cmd, sep, environ) == -1)
 		{
-			error_file(command, i, argv, 2);
+			error_file(cmd, i, argv, 2);
 		}
 	}
 	else
