@@ -43,6 +43,7 @@ void loop_asking(int i, char *argv[], env_t *env, path_t *path)
 		path_exec = 1;
 		env_exec = 1;
 		_prompt();
+		signal(SIGINT, sigint_handle);
 		buffer = _getline(path, env, status);
 		sep = separate_av(buffer, " \t\n\v\r\f");
 		if (sep != NULL && _strlen(sep[0]) > 255)

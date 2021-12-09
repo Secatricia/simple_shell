@@ -90,3 +90,14 @@ int _printenv(env_t *env, __attribute__((unused))char **sep)
 
 	return (0);
 }
+
+/**
+ * sigint_handle - Handle the CTRL+D signal
+ * print a new line and a new prompt
+ *
+ * @i: Unused variable
+ */
+void sigint_handle(__attribute__((unused))int i)
+{
+	write(STDOUT_FILENO, "\n$ ", 3);
+}
