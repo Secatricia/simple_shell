@@ -58,10 +58,10 @@ char *_getline(path_t *path, env_t *env, int status)
  */
 void exit_procedure(char *buffer, path_t *path, env_t *env, int status)
 {
-		free_linked_env(env);
-		free_linked_path(path);
-		free(buffer);
-		exit(status);
+	free_linked_env(env);
+	free_linked_path(path);
+	free(buffer);
+	exit(status);
 }
 
 /**

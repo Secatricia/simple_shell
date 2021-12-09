@@ -110,5 +110,8 @@ int _execute(char *cmd, char **sep, char **argv, int i)
 		wait(&status);
 	}
 
-	return (0);
+	if (status > 0)
+		status = 2;
+
+	return (status);
 }
